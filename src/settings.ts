@@ -34,7 +34,7 @@ export class MarginaliaSettingTab extends PluginSettingTab {
 			.setDesc('Where comment data is stored. After changing, use the migrate button to move existing data. Without migration, a plugin reload is needed and previous comments will not be visible.')
 			.addDropdown(dropdown => dropdown
 				.addOption('plugin', 'Plugin folder (comments/)')
-				.addOption('vault', 'Vault root (.marginalia/)')
+				.addOption('vault', 'Vault root (read-logs/)')
 				.setValue(this.plugin.settings.storageLocation)
 				.onChange(async (value) => {
 					this.plugin.settings.storageLocation = value as 'plugin' | 'vault';
@@ -47,7 +47,7 @@ export class MarginaliaSettingTab extends PluginSettingTab {
 					.onClick(async () => {
 						const newBasePath = normalizePath(
 							this.plugin.settings.storageLocation === 'vault'
-								? '.marginalia'
+								? 'read-logs'
 								: `${this.plugin.manifest.dir ?? ''}/comments`
 						);
 

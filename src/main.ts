@@ -36,12 +36,16 @@ export default class MarginaliaPlugin extends Plugin {
 		return this.cachedFilePath;
 	}
 
+	private isMobile(): boolean {
+		return (this.app as unknown as {isMobile?: boolean}).isMobile === true;
+	}
+
 	async onload() {
 		await this.loadSettings();
 
 		const basePath = normalizePath(
 			this.settings.storageLocation === 'vault'
-				? '.marginalia'
+				? 'read-logs'
 				: `${this.manifest.dir ?? ''}/comments`
 		);
 		this.store = new CommentStore(this.app.vault, basePath);
@@ -219,7 +223,7 @@ export default class MarginaliaPlugin extends Plugin {
 	}
 
 	showPopover(anchor: HTMLElement, commentIds: string[]): void {
-		if (this.settings.showGutterIcons) {
+		if (this.settings.showGutterIcons && !this.isMobile()) {
 			void this.popover?.show(anchor, commentIds);
 		}
 	}
@@ -277,10 +281,19 @@ export default class MarginaliaPlugin extends Plugin {
 			return;
 		}
 
-		const leaf = this.app.workspace.getRightLeaf(false);
+		const workspace = this.app.workspace as unknown as {
+			getRightLeaf?: (split: boolean) => {setViewState: (s: unknown) => Promise<void>} | null;
+			getLeaf?: (...args: unknown[]) => {setViewState: (s: unknown) => Promise<void>} | null;
+			revealLeaf: (leaf: unknown) => void;
+		};
+
+		const leaf =
+			workspace.getRightLeaf?.(false)
+			?? workspace.getLeaf?.('tab')
+			?? workspace.getLeaf?.(false);
 		if (leaf) {
 			await leaf.setViewState({type: VIEW_TYPE_COMMENT_PANEL, active: true});
-			void this.app.workspace.revealLeaf(leaf);
+			void workspace.revealLeaf(leaf);
 		}
 	}
 

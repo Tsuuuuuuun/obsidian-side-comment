@@ -93,7 +93,7 @@ Use **Go to next comment** / **Go to previous comment** to jump between commente
 
 | Setting | Options | Default | Description |
 | --------- | --------- | --------- | ------------- |
-| Storage location | Plugin folder (`comments/`) / Vault root (`.marginalia/`) | Plugin folder | Where comment data is stored. A migrate button moves existing data when changed. |
+| Storage location | Plugin folder (`comments/`) / Vault root (`read-logs/`) | Plugin folder | Where comment data is stored. A migrate button moves existing data when changed. |
 | Comment sort order | Position in file / Creation date | Position in file | How comments are ordered in the sidebar panel. |
 | Show gutter icons | On / Off | On | Display comment indicators in the editor gutter. |
 | Fuzzy match threshold | 0.1 – 0.5 (slider) | 0.3 | Maximum edit distance ratio for fuzzy anchor matching. Lower = stricter. |
@@ -104,7 +104,7 @@ Use **Go to next comment** / **Go to previous comment** to jump between commente
 Marginalia never touches your `.md` files. All comment data is stored as JSON in a separate location:
 
 - **Plugin folder** (default): `VaultFolder/.obsidian/plugins/marginalia/comments/`
-- **Vault root**: `VaultFolder/.marginalia/`
+- **Vault root**: `VaultFolder/read-logs/`
 
 Each note with comments gets its own JSON file. An `_index.json` file maps vault file paths to comment files. Vault rename and delete events are tracked automatically to keep everything in sync.
 

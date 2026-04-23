@@ -185,7 +185,7 @@ export class CommentPanelView extends ItemView {
 			attr: {'aria-label': 'More filters'},
 		});
 		setIcon(moreBtn, 'more-horizontal');
-		moreBtn.addEventListener('click', () => {
+		moreBtn.addEventListener('click', (evt) => {
 			const menu = new Menu();
 			for (const f of overflowFilters) {
 				menu.addItem(item => {
@@ -197,10 +197,7 @@ export class CommentPanelView extends ItemView {
 						});
 				});
 			}
-			menu.showAtMouseEvent(new MouseEvent('click', {
-				clientX: moreBtn.getBoundingClientRect().left,
-				clientY: moreBtn.getBoundingClientRect().bottom,
-			}));
+			menu.showAtMouseEvent(evt);
 		});
 
 		// Add note comment button

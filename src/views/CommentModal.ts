@@ -39,13 +39,16 @@ export class CommentModal extends Modal {
 		cancelBtn.addEventListener('click', () => this.close());
 
 		const hintEl = contentEl.createDiv({cls: 'marginalia-modal-hint'});
-		hintEl.textContent = 'Ctrl/Cmd+Enter to save, Esc to cancel';
+		const isMobile = (this.app as unknown as {isMobile?: boolean}).isMobile === true;
+		hintEl.textContent = isMobile ? 'Tap Save to save.' : 'Ctrl/Cmd+Enter to save, Esc to cancel';
 
-		// Mod+Enter to save
-		this.scope.register(['Mod'], 'Enter', () => {
-			this.save();
-			return false;
-		});
+		if (!isMobile) {
+			// Mod+Enter to save
+			this.scope.register(['Mod'], 'Enter', () => {
+				this.save();
+				return false;
+			});
+		}
 
 		// Focus textarea after modal opens
 		setTimeout(() => this.textareaEl.focus(), 50);
